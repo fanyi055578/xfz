@@ -1,0 +1,49 @@
+{% extends 'common/base.html' %}
+{% load static %}
+
+{% block title %}
+
+ <link rel="stylesheet" href="//at.alicdn.com/t/font_681895_w5poic4qj6vfgvi.css">
+    <link rel="stylesheet" href="{% static 'css/course/course_index.min.css' %}">
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+{% endblock %}
+
+{% block main %}
+<div class="main">
+        <div class="course-nav">
+            <div class="nav-container">
+
+                <h3 class="title">在线课堂</h3>
+                <ul class="nav-list">
+                    <li class="active"><a href="#">最新课堂</a></li>
+                    <li><a href="#">投资人说</a></li>
+                    <li><a href="#">明星案例</a></li>
+                    <li><a href="#">创业知识</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="wrapper">
+            <ul class="course-list">
+                 {% for Course in Courses %}
+                <li>
+                        <a href="{% url 'course:detail' course_id=Course.id %}">
+                        <div class="thumbnail-group">
+                            <img src="{{ Course.video_img }}" alt="" class="thumbnial">
+                        </div>
+                        <div class="course-info">
+                            <p class="title">{{ Course.title }}</p>
+                            <p class="author">{{ Course.teacher.teacher_name}}</p>
+                            <p class="price-group">
+                                <span class="pay">{{ Course.price }}</span>
+                            </p>
+                        </div>
+                    </a>
+                    {% endfor %}
+
+                </li>
+
+            </ul>
+        </div>
+    </div>
+{% endblock %}
+

@@ -1,0 +1,163 @@
+
+{% extends 'common/base.html' %}
+{% load static %}
+{% load news_filters %}
+
+
+{% block head %}
+    <link rel="stylesheet" href=".{% static 'css/news/index.min.css' %}">
+   <script src="{% static 'js/index.min.js' %}"></script>
+    <script src="{% static 'arttemplate/template-web.js' %}"></script>
+    {% load news_filters %}
+    <script id="news-item" type="text/html">
+    {% verbatim %}
+     {{ each newses news index }}
+      <li>
+                            <div class="thumbnail-group">
+                                <a href="/news_detail/{{ news.id }}/">
+                                    <img src="{{ news.image }}" alt="">
+                                </a>
+                            </div>
+                            <div class="news-group">
+                                <p class="title">
+                                    <a href="/news_detail/{{ news.id }}/">{{ news.title }}</a>
+                                </p>
+                                <p class="desc">
+                                    {{ news.desc }}
+                                </p>
+                                <p class="more">
+                                   <span class="category">{{ news.category.name }}</span>
+                                    <span class="pub-time pub_times" >{{ news.pub_time }}</span>
+                                    <span class="author">{{ news.author.username }}</span>
+                                </p>
+                            </div>
+                        </li>
+    {{ /each }}
+    {% endverbatim %}
+</script>
+{% endblock %}
+
+
+{% block main %}
+     <div class="main">
+        <div class="wrapper">
+            <div class="main-content-wrapper">
+                <div class="banner-group" id="banner-group">
+                    <ul class="banner-ul" id="banner-ul">
+                       {% for banner in banners %}
+                             <li>
+                            <a href="{{ banner.link_to }}">
+                                <img src="{{ banner.image_url }}" alt="">
+                            </a>
+                        </li>
+                       {% endfor %}
+
+                    </ul>
+                    <span class="arrow left-arrow">‹</span>
+                    <span class="arrow right-arrow">›</span>
+                    <div class="page-control-group">
+                        <ul class="page-control">
+                        </ul>
+                    </div>
+                </div>
+                <div class="list-outer-group">
+                    <ul class="list-tab">
+                        <li  data-category="0" class="active"><a href="javascript:void (0)">最新资讯</a></li>
+                       {% for category in categorys %}
+                             <li data-category="{{ category.id }}"><a href="javascript:void (0)">{{ category.name }}</a></li>
+                       {% endfor %}
+
+                    </ul>
+
+                    <ul class="list-inner-group">
+                      {% load news_filters %}
+                        {% for new in newses %}
+                         <li>
+                            <div class="thumbnail-group">
+                                <a href="{% url 'news:news_detail'  new.id %}">
+                                    <img src="{{ new.image }}" alt="">
+                                </a>
+                            </div>
+                            <div class="news-group">
+                                <p class="title">
+                                    <a href="{% url 'news:news_detail'  new.id %}">{{ new.title }}</a>
+                                </p>
+                                <p class="desc">
+                                    {{ new.desc }}
+                                </p>
+                                <p class="more">
+                                   <span class="category">{{ new.category.name }}</span>
+
+                                    <span class="pub-time">{{ new.pub_time|time_since }}</span>
+
+                                    <span class="author">{{  new.author.username }}</span>
+                                </p>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    <div class="load-more-group">
+                        <button class="load-more">查看更多</button>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-wrapper">
+                <div class="title-group">
+                    <span class="title">在线课堂</span>
+                    <a class="more" href="#">更多</a>
+                </div>
+                <div class="advertise-group">
+                    <a href="#">
+                        <img src="http://www.xfz.cn/static/build/images/side-gift-banner.png" alt="">
+                    </a>
+                </div>
+                <div class="platform-group">
+                    <div class="title-group">
+                        <span class="title">关注小饭桌</span>
+                    </div>
+                    <div class="focus-group">
+                        <ul class="left-group">
+                           <li class="zhihu">
+                               <a href="#" target="_blank">小饭桌创业课堂</a>
+                           </li>
+                            <li class="weibo">
+                               <a href="#" target="_blank">小饭桌创业课堂</a>
+                           </li>
+                            <li class="toutiao">
+                               <a href="#" target="_blank">小饭桌</a>
+                           </li>
+                        </ul>
+                        <div class="right-group">
+                            <p class="desc">扫码关注小饭桌微信公众平台xfz008</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="hot-news-group">
+                    <div class="title-group">
+                        <span class="title">热门推荐</span>
+                    </div>
+                    <ul class="hot-list-group">
+                        <li>
+                            <div class="left-group">
+                                <p class="title">
+                                        <a href="#">王健林卖掉进军海外首个项目:17亿售伦敦ON...</a>
+                                </p>
+                                <p class="more">
+                                    <span class="category">深度报道</span>
+                                    <span class="pub-time">1小时前</span>
+                                </p>
+                            </div>
+                            <div class="right-group">
+                                <a href="#">
+                                    <img src="http://static-image.xfz.cn/1516169692_914.jpg-website.news.list" alt="">
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+

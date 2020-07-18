@@ -1,0 +1,140 @@
+{% extends 'adminLTE/index.html' %}
+
+{% load static %}
+{% load news_filters %}
+
+
+{% block header %}
+    <script src="{% static 'js/write_news.min.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+<div class="col-md-12">
+    <div class="box">
+        <div class="box-header">
+            <form action="" method="get" class="form-inline">
+                <div class="form-group left-group">
+                    <label for="">时间：</label>
+                    {% if start %}
+                        <input type="text" class="form-control" name="start" placeholder="起始时间" id="start-picker" readonly value="">
+                    {% else %}
+                        <input type="text" class="form-control" name="start" placeholder="起始时间" id="start-picker" readonly>
+                    {% endif %}
+                    <span>—</span>
+                    {% if end %}
+                        <input type="text" id="end-picker" class="form-control" name="end" placeholder="结束时间" readonly value="">
+                    {% else %}
+                        <input type="text" id="end-picker" class="form-control" name="end" placeholder="结束时间" readonly>
+                    {% endif %}
+                </div>
+                <div class="form-group left-group">
+                    <label for="title-input">标题：</label>
+                    {% if title %}
+                        <input type="text" class="form-control" name="title" id="title-input" placeholder="关键字" value="">
+                    {% else %}
+                        <input type="text" class="form-control" name="title" id="title-input" placeholder="关键字">
+                    {% endif %}
+                </div>
+                <div class="form-group left-group">
+                    <label for="category-input">分类：</label>
+                    <select name="category" id="" class="form-control">
+                        {% if category_id == 0 %}
+                            <option value="0" selected>所有分类</option>
+                        {% else %}
+                            <option value="0">所有分类</option>
+                        {% endif %}
+                        {% for category in categories %}
+                            {% if category_id == category.pk %}
+                                <option value="" selected>asdasd</option>
+                            {% else %}
+                                <option value="">asdaws</option>
+                            {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group left-group">
+                    <button class="btn btn-primary">查询</button>
+                </div>
+                <div class="form-group">
+                    <a href="">清除查询</a>
+                </div>
+            </form>
+        </div>
+        <div class="box-body">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>标题</th>
+                        <th>分类</th>
+                        <th>发布时间</th>
+                        <th>作者</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    {% for news in news %}
+                            <tr>
+                            <td><a target="_blank" href="">{{ news.title }}</a></td>
+                            <td>{{ news.category.name }}</td>
+                            <td>{{ news.pub_time|time_since }}</td>
+                            <td>{{ news.author.username }}</td>
+                            <td>
+                                <a href="{% url 'cms:edit_news' %}?pk={{ news.id }}" class="btn btn-info btn-xs edit-btn" data-news-id="{{ news.id }}">编辑</a>
+                                <button class="btn btn-danger btn-xs delete-btn delete-btn" data-news-id="{{ news.id }}">删除</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+
+
+                </tbody>
+            </table>
+        </div>
+        <div class="box-footer">
+            <p class="pull-left">第}页</p>
+            <ul class="pagination pull-right">
+                {#上一页#}
+{#                {% if page_obj.has_previous %}#}
+{#                    <li><a href="">上一页</a></li>#}
+{#                {% else %}#}
+{#                    <li class="disabled"><a href="javascript:void(0);">上一页</a></li>#}
+{#                {% endif %}#}
+{##}
+                {# 是否需要出现三个点 #}
+{#                {% if left_has_more %}#}
+{#                    <li><a href="?p=1">1</a></li>#}
+{#                    <li><a href="javascript:void(0);">...</a></li>#}
+{#                {% endif %}#}
+{##}
+                {# 左边的页码 #}
+{#                {% for left_page in left_pages %}#}
+{#                    <li><a href=""></a></li>#}
+{#                {% endfor %}#}
+{##}
+                {# 当前的页面 #}
+{#                <li class="active"><a href=""></a></li>#}
+{##}
+                {# 右边的页码 #}
+{#                {% for right_page in right_pages %}#}
+{#                    <li><a href=""></a></li>#}
+{#                {% endfor %}#}
+{##}
+                {# 用来控制右边三个点 #}
+{#                {% if right_has_more %}#}
+{#                    <li><a href="javascript:void(0);">...</a></li>#}
+{#                    <li><a href="">asdasd</a></li>#}
+{#                {% endif %}#}
+{##}
+                {#下一页#}
+{#                {% if page_obj.has_next %}#}
+{#                    <li><a href="?p=">下一页</a></li>#}
+{#                {% else %}#}
+{#                    <li class="disabled"><a href="javascript:void(0);">下一页</a></li>#}
+{#                {% endif %}#}
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock %}
